@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React App 1</title>
+</head>
+<body>
+    <!-- If we try to write any new code it will not 
+     going to show in the browser as react will 
+     rendering itself inside the root. therefore 
+     react will overwrite everything  -->
+    <div id="root">
+    </div>
+
+
+
+
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script>
+        // createElement has three components first is the tag
+        // which we want to create and in the second where to place the 
+        // brackets there we can pass arguments like id, class,etc
+        // and in the third we have the data which we want to store 
+        const heading = React.createElement("h1", {
+            id:"title",
+        }, "Hello world");
+        
+        // that is the api to create root
+        // as soon as we will made our root we will be abke to render our 
+        // react code inside of it . that is why we have created the reactdom.createroot and selected the place thorugh our plain js
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+
+        // root.render will help rendering whatever we want to render 
+        root.render(heading);
+
+    </script>
+</body>
+
+</html>
