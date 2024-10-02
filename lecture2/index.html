@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React App 1</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="root">
+    </div>
+
+    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script> -->
+    <!-- <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
+   
+   <script type="module" src="app.js">
+    </script>
+</body>
+
+</html>
+
+
+<!-- do not put your package-lock.json file in .git-ignore file (so that your broser will stay updated with
+ the version you are using to use the app )
+ and put your node modules in your git ignore file (because it is quite heavy file and there is no meaning of putting such
+ heavy file insid ethe git )  -->
+ <!-- We just have to ship our package-lock.json and it will auto generate all the node_modules in our 
+  browser where ever it needs it  -->
+
+
+ <!-- how to set up parcel 
+ 
+ 1. npm init
+ 2. npm install -D parcel 
+
+ it is not the appropriate way to keep the react using the cdn as we have to request to cdn everytime we are running 
+ our application so in order to get rid of this we can install the react globally into our system using 
+
+ 3. npm install react
+ we also have the shorthand for install as i 
+ 4. npm i react-dom
+
+ now its time to ignite our app in order to do that we have to give the entry point to our app 
+ 5. npx parcel index.html
+
+
+ in case you want to make everything production ready in the dist folder we can do
+ 6. npx parcel build index.html
+ it will bundle everything together
+
+ also we need to put parcel-cache inside our gitignore 
+
+ once you are hitting enter make sure that you have your html and style.css file there in the project 
+ here npx stands for execution with npm 
+ -->
