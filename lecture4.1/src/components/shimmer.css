@@ -1,0 +1,28 @@
+.shimmerUI {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .shimmer-item {
+    height: 250px;
+    width: 300px;
+    background-color: gray;
+    /* Add animation for shimmer effect if needed */
+    animation: shimmer 1.5s infinite ease-in-out;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-color: #f0f0f0;
+    }
+    50% {
+      background-color: #e0e0e0;
+    }
+    100% {
+      background-color: #f0f0f0;
+    }
+  }
+  
