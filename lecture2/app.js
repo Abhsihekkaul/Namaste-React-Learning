@@ -20,7 +20,7 @@
 // 13. it can also run thorugh https : npx parcel build index.html --https
 // 14. Manages port number 
 // 15. consistent hashing algorithm 
-
+// 16. Tree Shaking - removing un-wanted codes
 // inside the node_modules we have a package called babel which helps to create polyfils which eventually helps to make our code run in the older version of the browser 
 
 
@@ -45,6 +45,23 @@ const heading2 = React.createElement("h2", {
 const container = React.createElement("div", {
     className:"container-1",
 }, [heading1,heading2,heading1,heading2]);
+
+
+// the way we use to write our code is bit lengthy that is why the jsx got indtroduced
+
+const heading3 = <h1>My name is Abhishek kaul</h1>;
+
+// JSX (JavaScript Syntax eXtension) is a JavaScript extension that allows users to 
+// write HTML-like code within JavaScript files. It's similar to HTML but is stricter
+//  and can display dynamic information.
+
+// normally heading3 is not executable code for vanilla javascript it is the babel which is helping it out
+// to make it possible it is kept on creating html thing thorugh jsx 
+
+// normally : React.createContext => object =>HTML(DOM)
+// in jsx : jsx => React.createContext => object =>HTML(DOM)
+
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render([container]);
+root.render([container,heading3]);
