@@ -19,8 +19,8 @@ const greetings= () => {
 }
 
 // if you are creating some complex structure don't forget to put the parenthesis after the resurn statement 
-// good way to write component is to write them in the capital letter
-// Always remember onces writing jsx complex tructure should be kept inside one parent inside such as div
+// good way to write component is to write first letter in the capital letter
+// Always remember onces writing jsx complex tsructure should be kept inside one parent inside such as div
 const FruitsChart = () => {
     return (
         <div className="Container">
