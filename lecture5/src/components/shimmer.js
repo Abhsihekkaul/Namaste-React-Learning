@@ -15,7 +15,7 @@ const Shimmer = () => {
       </div>
 
     <div className="shimmerUI">
-      {shimmerItems.map((index) => (
+      {shimmerItems.map((e,index) => (
         <div key={index} className="shimmer-item"></div>
       ))}
     </div>

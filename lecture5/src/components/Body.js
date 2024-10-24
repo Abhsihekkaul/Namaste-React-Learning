@@ -1,33 +1,7 @@
-import { useState, useEffect } from "react"; // importing the useState hook
+import { useState, useEffect } from "react"; 
 import RestaurantCard from "./cards";
 import Shimmer from "./shimmer";
-
-// what are hooks - normal function created by facebook developers
-
-// why we need state variable in the first place - 
-// We need state variables because:
-// 1. They trigger re-renders when data changes, ensuring the UI stays in sync with the current data.
-// 2. They store dynamic data that can change over time, like user input or fetched API data.
-// 3. They enable React’s one-way data binding, making the flow of data predictable and controlled.
-// 4. Local variables don’t persist or cause re-renders, making state essential for maintaining dynamic behavior in components.
-// In short, state is how React manages and controls the dynamic nature of your app’s UI, ensuring the data and UI are always synchronized.
-
-// we will not be able to make changes if we create the normal input field using JSX
-// the reason behind it not working is because React uses one-way data binding 
-// In order to make changes, we need a React type of variable called STATE Variables
-// every component in React maintains some sort of state
-// thereafter, all the local variables go onto that state
-// In this particular example, we are going to use one of these states, which is called the useState hook
-
-// furthermore, we also have a hook called useEffect, which takes two things: first is 
-// the callback function and second is the dependency array by which the useEffect callback function 
-// should be called. 
-
-
-// Next is creating a shimmer UI using the conditional rendering so that our website will look smoother while working 
-
-// in the curly braces one can only write the js expression not the statement 
-
+import { Link } from "react-router-dom";
 
 // Filtering function to filter restaurants based on search text
 function filterData(searchTxt, originalRestaurantList) {
@@ -69,7 +43,9 @@ const Body = () => {
     setAllRestaurants(restaurantData || []); // Store original full data
   }
 
-  return (Restaurantss.length === 0 ) ? <Shimmer /> :(
+  return (Restaurantss.length === 0 ) ? (
+    <Shimmer /> // Show shimmer when data is loading
+  ) : (
     <div className="container">
       <div className="search-container">
         {/* Controlled input field for search. Its value is tied to the state (searchTxt) */}
@@ -101,7 +77,12 @@ const Body = () => {
         {/* Rendering the filtered list of restaurants from Restaurantss state */}
         {Array.isArray(Restaurantss) && Restaurantss.length > 0 ? (
           Restaurantss.map((restaurant) => (
-            <RestaurantCard key={restaurant.info.id} restaurant={restaurant} />
+            <Link 
+              to={`/restaurant/${restaurant.info.id}`}  // Corrected URL path
+              key={restaurant.info.id} 
+            >
+              <RestaurantCard restaurant={restaurant} />
+            </Link>
           ))
         ) : (
           // If no restaurants match the search, display a message

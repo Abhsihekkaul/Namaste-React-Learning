@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function checkLoggedIn() {
   // Logic to check if the user is logged in can go here
@@ -10,15 +11,23 @@ const Header = () => {
 
   return (
     <div className="nav-bar">
+      <Link to="/">
       <img
         className="logo"
         alt="logo-img"
         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3-kjb4wMhqsqM5n4Zh2dIHSmUFAU4VrOw3A&s"
       />
+      </Link>
       <ul className="nav-items">
+        <Link to="/">
         <li className="home">Home</li>
+        </Link>
+        <Link to="/About">
         <li>About</li>
+        </Link>
+        <Link to="/Contact">
         <li>Contact Us</li>
+        </Link>
         <li>Cart</li>
 
         {isUserLogin ? (
