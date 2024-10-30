@@ -23,6 +23,8 @@ const Body = () => {
   // Local state to handle the list of restaurants, initially set to an empty array
   const [Restaurantss, setRestaurantss] = useState([]); // Filtered list
   const [allRestaurants, setAllRestaurants] = useState([]); // Original full list
+  const [loading, setLoading] = useState(true); // State to track loading status
+  const [error, setError] = useState(null); // State to store any error message
 
   // useEffect hook for API call
   useEffect(() => {
@@ -30,22 +32,37 @@ const Body = () => {
   }, []);
 
   async function ApiCallSwiggy() {
-    // Fetching restaurant data from Swiggy API
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.29844139999999&lng=77.99313599999999&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await data.json();
-    console.log(json);
-    // Optional chaining to handle cases where data might not be available
-    const restaurantData =
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-    setRestaurantss(restaurantData || []); // Set filtered data
-    setAllRestaurants(restaurantData || []); // Store original full data
+    try {
+      // Fetching restaurant data from Swiggy API
+      const data = await fetch(
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.29844139999999&lng=77.99313599999999&page_type=DESKTOP_WEB_LISTING"
+      );
+      if (!data.ok) {
+        throw new Error("Network response was not ok"); // Throw error if response is not successful
+      }
+      const json = await data.json();
+      console.log(json);
+      
+      // Optional chaining to handle cases where data might not be available
+      const restaurantData =
+        json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+      setRestaurantss(restaurantData || []); // Set filtered data
+      setAllRestaurants(restaurantData || []); // Store original full data
+    } catch (err) {
+      // Handle errors and update the error state
+      console.error("Fetch error:", err);
+      setError("Failed to fetch restaurant data. Please try again later.");
+    } finally {
+      // Ensure loading state is false after fetch completes
+      setLoading(false);
+    }
   }
 
-  return (Restaurantss.length === 0 ) ? (
-    <Shimmer /> // Show shimmer when data is loading
-  ) : (
+  // Display shimmer component while loading or error message if there's an error
+  if (loading) return <Shimmer />;
+  if (error) return <p>{error}</p>;
+
+  return (
     <div className="container">
       <div className="search-container">
         {/* Controlled input field for search. Its value is tied to the state (searchTxt) */}

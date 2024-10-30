@@ -27,12 +27,12 @@ const RestaurantMenu = () => {
 
     return (!restaurant) ? <Shimmer /> : (
         <>
-            <h1>Restaurant id: {params.id}</h1>
-            <h1>{restaurant.name}</h1>
+            <h1>Restaurant id: {params?.id}</h1>
+            <h1>{restaurant?.name}</h1>
             <img src={IMG_CDN_LINK + restaurant.cloudinaryImageId} alt={restaurant.name} />
-            <h1>City: {restaurant.city}</h1>
-            <h1>Cost for two: ₹{restaurant.costForTwo / 100}</h1>
-            <h1>Average Rating: {restaurant.avgRating}</h1>
+            <h1>City: {restaurant?.city}</h1>
+            <h1>Cost for two: ₹{restaurant?.costForTwo / 100}</h1>
+            <h1>Average Rating: {restaurant?.avgRating}</h1>
         </>
     );
 }
