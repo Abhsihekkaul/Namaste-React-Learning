@@ -32,6 +32,11 @@ class ClassProfile extends React.Component {
         this.state = {
             count: 0,
             count2: 1,
+
+            userinfo : {
+            Name : "Dummy Name",
+            Location : "Dummy Location ",
+        }
         };
     }
         // like we have useEffect inside the functional component similarly we have 
@@ -40,37 +45,59 @@ class ClassProfile extends React.Component {
         // make your API calls
         // below are the reason why it is considered as the best place to make APi calls 
 
-    componentDidMount(){
+        // as we are doing API call we  can make this function async
+    async componentDidMount(){
         {console.log("Child - ComponentDidMount" + this.props.name)}
-        // Component Initialization: componentDidMount runs after the component is added to the DOM, so fetched data can be set directly without interrupting rendering.
+        // Component Initialization: componentDidMount runs after the component is added to the DOM,
+        //  so fetched data can be set directly without interrupting rendering.
 
-        //Avoiding Multiple Calls: It only runs once after initial render, preventing repeated API calls that can happen in the constructor or render method.
+        //Avoiding Multiple Calls: It only runs once after initial render, preventing repeated API 
+        // calls that can happen in the constructor or render method.
 
-        //Consistent State Updates: Allows safe state updates without risking errors from setting state on an unmounted component.
+        //Consistent State Updates: Allows safe state updates without risking errors from setting 
+        // state on an unmounted component.
 
-        //Asynchronous Nature: Makes it easy to handle loading states, showing feedback while data is fetched asynchronously.
-    
+        //Asynchronous Nature: Makes it easy to handle loading states, showing feedback while data
+        //  is fetched asynchronously.
+        
+        const response = await fetch("https://api.github.com/users/Abhsihekkaul");
+        const data = await response.json();
+        console.log(data);
+        this.setState({
+            userinfo : data,
+    })
 
-        async function fetchData() {
-            const response = await fetch("https://api.github.com/users/Abhsihekkaul");
-            const data = await response.json();
-            console.log(data);
+        // this.timer = setInterval(()=> {
+        //     console.log("I am working behind the scene so always unmount me")
+        // },1000)
         }
+
+
+        // if we want something to change when the state of something is changing then we have to declare in 
+        // the componentDIdUpdate as it reconcile after every re render 
+    // componentDidUpdate(prevProps, prevState){
+    //    if (this.state.count !== prevState.count){
+    //     // code 
+    //    }
+    // }   
+    
+    
+    // componentWillUnmount(){
+    //     clearInterval(this.timer);
+    //     console.log("ComponentWillUnmount")
+    // }
         
-        fetchData();
-        
-    }
     render() {
         // Accessing props and state values with `this.props` and `this.state`
         // we can also destructor them 
-        {console.log("Child - render"  + this.props.name)}
+        {console.log("Child - render"  + this.state.name)}
         const {count2} = this.state
         return (
             
             <>
                 <h2>Hello world</h2>
                 <h1>Name: {this.props.name}</h1>
-                <h2>Count 1: {this.state.count}</h2>
+                <h2>Count 1: {this.props.count}</h2>
                 {/* as we have destructure it now we can simply use count2 here */}
                 <h2>Count 2: {count2}</h2>
                 <button onClick={() => {
@@ -78,6 +105,11 @@ class ClassProfile extends React.Component {
                         count2 : 2,
                     })
                 }}>Button</button>
+
+
+                <h1>Github-Name: {this.state.userinfo.name}</h1>
+                <h2>Location : {this.state.userinfo.location}</h2>
+                {/* <img src={this.setState.userinfo.avatar_url} /> */}
             </>
         );
     }
