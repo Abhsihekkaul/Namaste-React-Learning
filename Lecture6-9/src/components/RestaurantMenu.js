@@ -5,26 +5,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IMG_CDN_LINK } from "../constant";
 import Shimmer from "./shimmer";
-
+import useRestaurant from "../Utils/useRestaurant";
 const RestaurantMenu = () => {
     const params = useParams();
-    const [restaurant, setRestaurant] = useState(null); // Start with `null` instead of an empty array
-
-    useEffect(() => {
-        ApiMenu();
-    }, []);
-
-    async function ApiMenu() {
-        // Using backticks for proper string interpolation
-        const data = await fetch(`https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=30.7261768&lng=76.7655411&restaurantId=${params.id}&submitAction=ENTER`);
-        
-        const json = await data.json();
-        console.log(json.data);
-        
-        // Assuming `cards[2].card.card.info` is correct based on your API structure
-        setRestaurant(json?.data?.cards[2]?.card?.card?.info);
-    }
-
+   
+    const restaurant = useRestaurant(params.id)
     return (!restaurant) ? <Shimmer /> : (
         <>
             <h1>Restaurant id: {params?.id}</h1>

@@ -2,38 +2,23 @@ import { useState, useEffect } from "react";
 import RestaurantCard from "./cards";
 import Shimmer from "./shimmer";
 import { Link } from "react-router-dom";
-
-// Filtering function to filter restaurants based on search text
-function filterData(searchTxt, originalRestaurantList) {
-  if (searchTxt === "") {
-    // Return the full list of restaurants if the search text is empty
-    return originalRestaurantList;
-  } else {
-    // Filter the restaurant list based on the search text
-    return originalRestaurantList.filter((restaurant) =>
-      restaurant.info.name.toLowerCase().includes(searchTxt.toLowerCase())
-    );
-  }
-}
+import { filterData } from "../Utils/helper";
+import useIsOffline from "../Utils/useIsOffline";
 
 const Body = () => {
-  // Local state variable to handle the search text
+
   const [searchTxt, setSearchInput] = useState("");
+  const [Restaurantss, setRestaurantss] = useState([]); 
+  const [allRestaurants, setAllRestaurants] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); 
 
-  // Local state to handle the list of restaurants, initially set to an empty array
-  const [Restaurantss, setRestaurantss] = useState([]); // Filtered list
-  const [allRestaurants, setAllRestaurants] = useState([]); // Original full list
-  const [loading, setLoading] = useState(true); // State to track loading status
-  const [error, setError] = useState(null); // State to store any error message
-
-  // useEffect hook for API call
   useEffect(() => {
     ApiCallSwiggy();
   }, []);
 
   async function ApiCallSwiggy() {
     try {
-      // Fetching restaurant data from Swiggy API
       const data = await fetch(
         "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.29844139999999&lng=77.99313599999999&page_type=DESKTOP_WEB_LISTING"
       );
@@ -57,10 +42,12 @@ const Body = () => {
       setLoading(false);
     }
   }
+  const checkInternetStatus = useIsOffline();
 
   // Display shimmer component while loading or error message if there's an error
   if (loading) return <Shimmer />;
   if (error) return <p>{error}</p>;
+  if(checkInternetStatus) return <h1>You are offline</h1>
 
   return (
     <div className="container">
