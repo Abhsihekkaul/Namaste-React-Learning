@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import HeaderStatus from "../Utils/HeaderStatus";
 
 function checkLoggedIn() {
   // Logic to check if the user is logged in can go here
@@ -19,6 +20,7 @@ const Header = () => {
       />
       </Link>
       <ul className="nav-items">
+      <HeaderStatus />
         <Link to="/">
         <li className="home">Home</li>
         </Link>
@@ -28,14 +30,21 @@ const Header = () => {
         <Link to="/Contact">
         <li>Contact Us</li>
         </Link>
-        <li>Cart</li>
 
+        <Link to="/Insta">
+        <li>Insta</li>
+        </Link>
+
+        <li>Cart</li>
+        
         {isUserLogin ? (
           <button className="LOG" onClick={() => setUserLogin(false)}>Logout</button>
         ) : (
           <button className="LOG" onClick={() => setUserLogin(true)}>Login</button>
         )}
       </ul>
+
+      
 
       
     </div>

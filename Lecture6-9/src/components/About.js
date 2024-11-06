@@ -1,7 +1,5 @@
-// in order to run children it is required to have oulet here 
 
 import React, { useState } from "react"
-// import { Outlet } from "react-router-dom"
 import Profile from "./profile"
 import ClassProfile from "./profileClass"
 
@@ -32,13 +30,3 @@ class About extends React.Component{
     }
 
 export default About
-
-
-
-// why can't we make useEffect aysnc but component did mount async ?
-
-// useEffect cannot be directly async because it expects a synchronous cleanup function or
-//  nothing at all, not a promise.
-
-// componentDidMount can be async because it's a regular class method and not constrained 
-// by React’s synchronous lifecycle expectations.
