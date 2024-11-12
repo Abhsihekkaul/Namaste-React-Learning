@@ -1,10 +1,11 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState, createContext } from "react";
 import ReactDOM from "react-dom/client";
-import { head } from "lodash";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+
+// Import Components
 import Header from "./components/Header";
 import Body from "./components/Body";
 import Footer from "./components/Footer";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Error from "./components/Error";
@@ -12,41 +13,41 @@ import RestaurantMenu from "./components/RestaurantMenu";
 import Profile from "./components/profile";
 import ClassProfile from "./components/profileClass";
 import Shimmer from "./components/shimmer";
+import userContext from "./Utils/userContext";
+import { set } from "lodash";
 
-// As we know that every component we create everynew file we are creating it will be bundled together to one 
-// with the help of babel but there is a problem will the bundling 
-// suppose we are creating large sccale application and there are thousands of different components and utilities 
-// it will eventually make our one js file way to verbose so in order to handle it we can use the term knows as 
+// Lazy loading the Insta component to optimize performance
+const Insta = lazy(() => import('./components/Insta'));
 
-// chunking the bundlers 
-// Aka Lazy Loading - only loading the component which user is looking forward to see or he just chose to go with 
-// aka on demand loading 
-// aka Dynamic Importing 
-// aka code splitting 
-// aka dynamic bundling 
-
-
-const Insta = lazy(()=>import('./components/Insta'))
-
-// when we try to load something on demand react try to suspend it that is why the error occur as there is no code 
-// availabke to the react in order to handle this error we have <suspense >
-
+// Create a Context for user data, allowing it to be accessed throughout the app
+const UserContext = createContext();
 
 const AppLayout = () => {
+  // Managing user data state
+  const [NewUser, setNewUser] = useState({
+    name: "Abhishek Kaul",
+    email: "Abhishekkaul32@gmail.com"
+  });
+
   return (
-    <>
+    // Provide user data to child components via context
+    <userContext.Provider value={{ 
+      NewUser : NewUser,
+      setNewUser : setNewUser,
+     }}>
       <Header />
       <Outlet />
       <Footer />
-    </>
+    </userContext.Provider>
   );
 };
 
+// Define routes and components for the application
 const appRouter = createBrowserRouter([
   {
     path: '/',
     element: <AppLayout />,
-    errorElement: <Error />,
+    errorElement: <Error />,  // Error handling for routes
     children: [
       {
         path: '/',
@@ -71,17 +72,27 @@ const appRouter = createBrowserRouter([
         element: <Contact />
       },
       {
-        // Wrap Instamart with Suspense to handle the loading state
-        path: '/Insta',
-        element:  <Suspense fallback={<Shimmer/>}><Insta /></Suspense>
+        // Lazy loading the Insta component with Suspense
+        path: '/insta',
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Insta />
+          </Suspense>
+        )
       },
       {
+        // Lazy loading the RestaurantMenu component with Suspense
         path: '/restaurant/:id',
-        element: <Suspense fallback={<Shimmer/>}><RestaurantMenu /></Suspense>
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <RestaurantMenu />
+          </Suspense>
+        )
       }
     ]
   }
 ]);
 
+// Render the application with the router
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);
