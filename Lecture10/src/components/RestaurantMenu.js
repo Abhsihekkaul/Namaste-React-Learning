@@ -1,25 +1,41 @@
-// lets read the id which we have set in the app.js
-// routing parameter
-// https://www.swiggy.com/dapi/menu/v4/full?lat=12.9351929&lng=77.62448069999999&menuId=642768
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IMG_CDN_LINK } from "../constant";
 import Shimmer from "./shimmer";
 import useRestaurant from "../Utils/useRestaurant";
+
 const RestaurantMenu = () => {
-    const params = useParams();
-   
-    const restaurant = useRestaurant(params.id)
-    return (!restaurant) ? <Shimmer /> : (
-        <>
-            <h1>Restaurant id: {params?.id}</h1>
-            <h1>{restaurant?.name}</h1>
-            <img src={IMG_CDN_LINK + restaurant.cloudinaryImageId} alt={restaurant.name} />
-            <h1>City: {restaurant?.city}</h1>
-            <h1>Cost for two: ₹{restaurant?.costForTwo / 100}</h1>
-            <h1>Average Rating: {restaurant?.avgRating}</h1>
-        </>
-    );
-}
+  const params = useParams();
+  const restaurant = useRestaurant(params.id);
+
+  return !restaurant ? (
+    <Shimmer />
+  ) : (
+    <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg mt-6">
+      <h1 className="text-2xl font-semibold text-gray-800">
+        Restaurant ID: {params?.id}
+      </h1>
+      <h2 className="text-3xl font-bold text-blue-600 mt-2 mb-4">
+        {restaurant?.name}
+      </h2>
+      <img
+        src={IMG_CDN_LINK + restaurant.cloudinaryImageId}
+        alt={restaurant.name}
+        className="w-full h-64 object-cover rounded-lg shadow-md mb-6"
+      />
+      <div className="text-lg text-gray-700">
+        <p className="mb-2">
+          <span className="font-medium">City:</span> {restaurant?.city}
+        </p>
+        <p className="mb-2">
+          <span className="font-medium">Cost for Two:</span> ₹{restaurant?.costForTwo / 100}
+        </p>
+        <p>
+          <span className="font-medium">Average Rating:</span> {restaurant?.avgRating} ⭐
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default RestaurantMenu;

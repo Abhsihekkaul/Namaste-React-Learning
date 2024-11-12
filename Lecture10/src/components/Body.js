@@ -7,27 +7,25 @@ import useIsOffline from "../Utils/useIsOffline";
 
 const Body = () => {
   const [searchTxt, setSearchInput] = useState("");
-  const [Restaurantss, setRestaurantss] = useState([]); 
+  const [restaurants, setRestaurants] = useState([]); 
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
 
   useEffect(() => {
-    ApiCallSwiggy();
+    fetchRestaurants();
   }, []);
 
-  async function ApiCallSwiggy() {
+  async function fetchRestaurants() {
     try {
       const data = await fetch(
         "https://www.swiggy.com/dapi/restaurants/list/v5?lat=30.29844139999999&lng=77.99313599999999&page_type=DESKTOP_WEB_LISTING"
       );
-      if (!data.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!data.ok) throw new Error("Network response was not ok");
+      
       const json = await data.json();
-      console.log(json);
       const restaurantData = json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-      setRestaurantss(restaurantData || []);
+      setRestaurants(restaurantData || []);
       setAllRestaurants(restaurantData || []);
     } catch (err) {
       console.error("Fetch error:", err);
@@ -36,41 +34,41 @@ const Body = () => {
       setLoading(false);
     }
   }
+
   const checkInternetStatus = useIsOffline();
 
   if (loading) return <Shimmer />;
   if (error) return <p className="text-center text-red-500">{error}</p>;
-  if(checkInternetStatus) return <h1 className="text-center text-xl text-gray-600">You are offline</h1>;
+  if (checkInternetStatus) return <h1 className="text-center text-xl text-gray-600">You are offline</h1>;
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="search-container flex justify-center gap-4 mb-6">
+    <div className="container mx-auto p-6">
+      <div className="flex justify-center gap-4 mb-8">
         <input
           type="text"
-          className="search-input border border-gray-300 rounded-lg p-2 w-1/2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Search"
+          className="border border-gray-300 rounded-lg p-2 w-2/3 md:w-1/2 lg:w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
+          placeholder="Search for restaurants"
           value={searchTxt}
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <button
-          className="search-btn bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           onClick={() => {
             const data = filterData(searchTxt, allRestaurants);
-            setRestaurantss(data);
+            setRestaurants(data);
           }}
         >
           Search
         </button>
       </div>
 
-      <div className="restaurant-list grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {/* checking whether restaurant is array nd has length greater than 0 if true then do sth else sth */}
-        {Array.isArray(Restaurantss) && Restaurantss.length > 0 ? ( 
-          Restaurantss.map((restaurant) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {Array.isArray(restaurants) && restaurants.length > 0 ? (
+          restaurants.map((restaurant) => (
             <Link 
               to={`/restaurant/${restaurant.info.id}`}
               key={restaurant.info.id}
-              className="block hover:shadow-lg transition-shadow duration-200"
+              className="block bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-200 overflow-hidden"
             >
               <RestaurantCard restaurant={restaurant} />
             </Link>
